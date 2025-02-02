@@ -1,7 +1,8 @@
 import tailwindcssAnimate from 'tailwindcss-animate'
+import tailwindcssTypography from '@tailwindcss/typography'
+import tailwindAspectRatio from '@tailwindcss/aspect-ratio'
 
 module.exports = {
-  darkMode: ['class'],
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -10,54 +11,54 @@ module.exports = {
   theme: {
     extend: {
       borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        lg: '20px',
+        md: '18px',
+        sm: '16px)',
       },
       colors: {
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
+        background: 'hsl(215, 29%, 13%)',
+        foreground: 'hsl(0 0% 98%)',
         card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
+          DEFAULT: 'hsl(0 0% 3.9%)',
+          foreground: 'hsl(0 0% 98%)',
         },
         popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
+          DEFAULT: 'hsl(0 0% 3.9%)',
+          foreground: 'hsl(0 0% 98%)',
         },
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
+          DEFAULT: 'hsl(203, 90%, 53%)',
+          foreground: 'hsl(0 0% 98%)',
         },
         secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
+          DEFAULT: 'hsl(0 0% 14.9%)',
+          foreground: 'hsl(0 0% 98%)',
         },
         muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
+          DEFAULT: 'hsl(0 0% 14.9%)',
+          foreground: 'hsl(0 0% 63.9%)',
         },
         accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
+          DEFAULT: 'hsl(0 0% 14.9%)',
+          foreground: 'hsl(0 0% 98%)',
         },
         destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
+          DEFAULT: 'hsl(0 62.8% 30.6%)',
+          foreground: 'hsl( 0 0% 98%)',
         },
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
+        border: 'hsl(208, 14%, 26%)',
+        input: 'hsl(0 0% 14.9%)',
+        ring: 'hsl(0 0% 83.1%)',
         chart: {
-          1: 'hsl(var(--chart-1))',
-          2: 'hsl(var(--chart-2))',
-          3: 'hsl(var(--chart-3))',
-          4: 'hsl(var(--chart-4))',
-          5: 'hsl(var(--chart-5))',
+          1: 'hsl(220 70% 50%)',
+          2: 'hsl(160 60% 45%)',
+          3: 'hsl(30 80% 55%)',
+          4: 'hsl(280 65% 60%)',
+          5: 'hsl(340 75% 55%)',
         },
-        placeholder: 'hsl(var(--placeholder))',
+        placeholder: 'hsl(204, 14%, 59%)',
       },
     },
   },
-  plugins: [tailwindcssAnimate],
+  plugins: [tailwindAspectRatio, tailwindcssAnimate, tailwindcssTypography],
 }

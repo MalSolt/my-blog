@@ -1,9 +1,13 @@
-import { Textarea } from "@/components/ui/textarea";
+import { Editor } from './_components/editor/editor'
 
 export default function Home() {
   return (
-    <div className='flex flex-col'>
-      <Textarea placeholder="What's on your mind?" className='w-full' />
+    <div className=''>
+      <div className='p-4'>
+        <h1 className='text-center text-2xl'>Welcome to the Refugee Blog</h1>
+        <p>This is a platform where refugees can share their stories and experiences.</p>
+      </div>
+      <Editor />
     </div>
   )
 }

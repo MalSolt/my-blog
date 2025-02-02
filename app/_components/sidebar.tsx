@@ -1,13 +1,15 @@
 'use client'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { useAuthStore } from '@/stores/auth-store'
 import { Home, User } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { FC } from 'react'
 
-interface NavItemProps {
+type NavItemProps = {
   icon: FC<{ className?: string }>
   label: string
   href: string
@@ -20,10 +22,11 @@ const navItems: Omit<NavItemProps, 'isActive'>[] = [
 ]
 
 export const Sidebar = () => {
+  const signOut = useAuthStore((state) => state.signOut)
   const pathname = usePathname()
 
   return (
-    <div className='h-screen w-64 border-r border-border p-4 flex flex-col justify-between'>
+    <div className='min-h-screen w-[275px] border-r p-4 flex flex-col justify-between'>
       <nav className='flex flex-col space-y-4'>
         <div className='text-xl font-bold'>My App</div>
         <ul className='space-y-2'>
@@ -32,6 +35,7 @@ export const Sidebar = () => {
           ))}
         </ul>
       </nav>
+      <Button onClick={signOut}>Sign Out</Button>
       <div className='flex items-center gap-2'>
         <Avatar>
           <AvatarImage src='/profile-pic.jpg' alt='Profile Picture' />
@@ -51,8 +55,7 @@ const NavItem = ({ icon: Icon, label, href, isActive }: NavItemProps) => {
     <li>
       <Link
         href={href}
-        className={cn('flex items-center space-x-3 p-2 rounded-lg transition', {
-          'hover:text-primary': !isActive,
+        className={cn('flex items-center space-x-3 p-2 rounded-lg transition hover:text-primary', {
           'text-primary': isActive,
         })}
       >
