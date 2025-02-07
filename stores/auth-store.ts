@@ -1,6 +1,9 @@
-import { SignInCredentials, SignUpCredentials } from '../services/auth-service'
+import {
+  SignInCredentials,
+  SignUpCredentials,
+  authRepository,
+} from '../repositories/auth.repository'
 import { create } from 'zustand'
-import { authService } from '../services/auth-service'
 
 type Status = 'idle' | 'authorized' | 'unauthorized'
 
@@ -16,17 +19,17 @@ export const useAuthStore = create<AuthState>((set) => ({
   status: 'idle',
 
   signUp: async (credentials: SignUpCredentials) => {
-    await authService.signUp(credentials)
+    await authRepository.signUp(credentials)
     set({ status: 'authorized' })
   },
 
   signIn: async (credentials: SignInCredentials) => {
-    await authService.signIn(credentials)
+    await authRepository.signIn(credentials)
     set({ status: 'authorized' })
   },
 
   signOut: async () => {
-    await authService.logout()
+    await authRepository.logout()
     set({ status: 'unauthorized' })
   },
 

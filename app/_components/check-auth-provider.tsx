@@ -1,6 +1,6 @@
 'use client'
 
-import { authService } from '@/services/auth-service'
+import { authRepository } from '@/repositories/auth.repository'
 import { useAuthStore } from '@/stores/auth-store'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
@@ -18,7 +18,7 @@ export function CheckAuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     async function verifyAuth() {
       try {
-        await authService.refreshToken()
+        await authRepository.refreshToken()
         setStatus('authorized')
       } catch (error) {
         setStatus('unauthorized')

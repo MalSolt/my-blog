@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/app/_components/utils'
 import { Editor } from '@tiptap/react'
 
 export const StyleControllers = ({ editor }: { editor: Editor }) => {

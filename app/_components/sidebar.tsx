@@ -1,8 +1,8 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import { Avatar, AvatarFallback, AvatarImage } from '@/app/_components/ui/avatar'
+import { Button } from '@/app/_components/ui/button'
+import { cn } from '@/app/_components/utils'
 import { useAuthStore } from '@/stores/auth-store'
 import { Home, User } from 'lucide-react'
 import Link from 'next/link'

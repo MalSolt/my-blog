@@ -5,10 +5,10 @@ import './editor.css'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/app/_components/ui/button'
 import { StyleControllers } from './style-controllers'
 import { useState } from 'react'
-import { api } from '@/services/api-client'
+import { api } from '@/repositories/api-client'
 
 export const Editor = () => {
   const [imgUrls, setImgUrls] = useState<string[]>([])

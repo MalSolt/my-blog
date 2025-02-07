@@ -1,8 +1,8 @@
 import React from 'react'
 import Image from 'next/image'
 import { ImageStatus, ImageUpload } from './image-picker'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import { Button } from '@/app/_components/ui/button'
+import { cn } from '@/app/_components/utils'
 
 interface ImagePreviewProps {
   image: ImageUpload
@@ -23,7 +23,9 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({ image, deleteImage }
       </div>
       <div className='w-full h-48 z-10'>
         <Button className='absolute top-2 right-5'>Edit</Button>
-        <Button className='absolute top-2 left-5' onClick={deleteImage}>Delete</Button>
+        <Button className='absolute top-2 left-5' onClick={deleteImage}>
+          Delete
+        </Button>
       </div>
       {image.status === ImageStatus.uploading && (
         <div className='absolute inset-0 flex items-center justify-center bg-muted bg-opacity-50'>

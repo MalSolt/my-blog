@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { authService } from './auth-service'
+import { authRepository } from './auth.repository'
 
 export const api = axios.create({
   baseURL: 'http://localhost:5000',
@@ -15,11 +15,11 @@ api.interceptors.response.use(
       originalRequest._retry = true
 
       try {
-        await authService.refreshToken()
+        await authRepository.refreshToken()
         return api(originalRequest)
       } catch (refreshError) {
         console.log('Session expired, logging out...', refreshError)
-        authService.logout()
+        authRepository.logout()
       }
     }
     return Promise.reject(error)

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useAuthStore } from '@/stores/auth-store'
 import { useRouter } from 'next/navigation'
-import { SignUpCredentials } from '@/services/auth-service'
+import { SignUpCredentials } from '@/repositories/auth.repository'
 
 type Form = SignUpCredentials
 

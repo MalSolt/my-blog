@@ -15,7 +15,7 @@ export type SignUpCredentials = {
 
 export type SignInCredentials = Pick<SignUpCredentials, 'email' | 'password'>
 
-export const authService = {
+export const authRepository = {
   signUp: async (credentials: SignUpCredentials) => {
     return api.post('/auth/signUp', credentials)
   },
