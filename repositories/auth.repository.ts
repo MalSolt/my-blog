@@ -31,4 +31,8 @@ export const authRepository = {
   refreshToken: async () => {
     return axios.post('http://localhost:5000/auth/refresh', null, { withCredentials: true })
   },
+
+  me: async () => {
+    return axios.post('http://localhost:5000/auth/me', null, { withCredentials: true })
+  },
 }

@@ -12,26 +12,46 @@ interface AuthState {
   signUp: (credentials: SignUpCredentials) => Promise<void>
   signIn: (credentials: SignInCredentials) => Promise<void>
   signOut: () => Promise<void>
-  setStatus: (status: Status) => void
+  me: () => Promise<void>
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   status: 'idle',
 
   signUp: async (credentials: SignUpCredentials) => {
-    await authRepository.signUp(credentials)
-    set({ status: 'authorized' })
+    try {
+      await authRepository.signUp(credentials)
+      set({ status: 'authorized' })
+    } catch (error) {
+      console.log(error)
+    }
   },
 
   signIn: async (credentials: SignInCredentials) => {
-    await authRepository.signIn(credentials)
-    set({ status: 'authorized' })
+    try {
+      await authRepository.signIn(credentials)
+      set({ status: 'authorized' })
+    } catch (error) {
+      console.log(error)
+    }
   },
 
   signOut: async () => {
-    await authRepository.logout()
-    set({ status: 'unauthorized' })
+    try {
+      await authRepository.logout()
+      set({ status: 'unauthorized' })
+    } catch (error) {
+      console.log(error)
+    }
   },
 
-  setStatus: (status: Status) => set({ status }),
+  me: async () => {
+    try {
+      await authRepository.me()
+      set({ status: 'authorized' })
+    } catch (error) {
+      set({ status: 'unauthorized' })
+      console.log(error)
+    }
+  },
 }))

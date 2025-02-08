@@ -59,7 +59,7 @@ export const ImagePicker = ({ getImgUrls }: Props) => {
       if (!response.ok) throw new Error('Upload failed')
 
       const { data } = await response.json()
-      
+
       getImgUrls([data.url])
 
       setSelectedImages((prev) =>

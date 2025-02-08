@@ -1,35 +1,37 @@
 'use client'
 
-import { authRepository } from '@/repositories/auth.repository'
 import { useAuthStore } from '@/stores/auth-store'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 export function CheckAuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
-  const { status, setStatus } = useAuthStore()
+  const pathname = usePathname()
+  const { status, me } = useAuthStore()
 
   useEffect(() => {
-    if (status === 'unauthorized') {
+    me()
+  }, [me])
+
+  useEffect(() => {
+    if (status === 'authorized' && pathname.startsWith('/auth')) {
+      router.push('/')
+    }
+
+    if (status === 'unauthorized' && !pathname.startsWith('/auth')) {
       router.push('/auth/sign-in')
     }
-  }, [status, router])
-
-  useEffect(() => {
-    async function verifyAuth() {
-      try {
-        await authRepository.refreshToken()
-        setStatus('authorized')
-      } catch (error) {
-        setStatus('unauthorized')
-        console.log(error)
-      }
-    }
-
-    verifyAuth()
-  }, [setStatus])
+  }, [router, pathname, status])
 
   if (status === 'idle') return <p>Loading...</p>
+
+  if (status === 'unauthorized' && !pathname.startsWith('/auth')) {
+    return <p>Loading...</p>
+  }
+
+  if (status === 'authorized' && pathname.startsWith('/auth')) {
+    return <p>Loading...</p>
+  }
 
   return children
 }
