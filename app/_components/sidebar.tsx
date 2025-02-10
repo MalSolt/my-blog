@@ -3,7 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/app/_components/ui/avatar'
 import { Button } from '@/app/_components/ui/button'
 import { cn } from '@/app/_components/utils'
-import { useAuthStore } from '@/stores/auth-store'
+import { useAuthStore } from '@/stores/auth.store'
 import { Home, User } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -22,7 +22,7 @@ const navItems: Omit<NavItemProps, 'isActive'>[] = [
 ]
 
 export const Sidebar = () => {
-  const signOut = useAuthStore((state) => state.signOut)
+  const { signOut, user } = useAuthStore()
   const pathname = usePathname()
 
   return (
@@ -42,8 +42,8 @@ export const Sidebar = () => {
           <AvatarFallback>DB</AvatarFallback>
         </Avatar>
         <div>
-          <p className='font-semibold text-sm leading-none'>Davide Biscuso</p>
-          <p className='text-xs text-placeholder'>@biscuttu</p>
+          <p className='font-semibold text-sm leading-none'>{user?.username}</p>
+          <p className='text-xs text-placeholder'>{user?.email}</p>
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@ import Placeholder from '@tiptap/extension-placeholder'
 import { Button } from '@/app/_components/ui/button'
 import { StyleControllers } from './style-controllers'
 import { useState } from 'react'
-import { api } from '@/repositories/api-client'
+import { api } from '@/repositories/api'
 
 export const Editor = () => {
   const [imgUrls, setImgUrls] = useState<string[]>([])

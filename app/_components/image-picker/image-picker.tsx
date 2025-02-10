@@ -2,6 +2,7 @@
 
 import { ChangeEvent, useState } from 'react'
 import { ImagePreview } from './image-preview'
+import axios from 'axios'
 
 export enum ImageStatus {
   uploading = 'uploading',
@@ -48,17 +49,10 @@ export const ImagePicker = ({ getImgUrls }: Props) => {
       const formData = new FormData()
       formData.append('image', file)
 
-      const apiKey = '568d853a3fda897db0860e688d73a4dc'
+      const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY
       const apiUrl = `https://api.imgbb.com/1/upload?key=${apiKey}`
 
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        body: formData,
-      })
-
-      if (!response.ok) throw new Error('Upload failed')
-
-      const { data } = await response.json()
+      const { data } = await axios.post(apiUrl, formData)
 
       getImgUrls([data.url])
 

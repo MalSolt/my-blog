@@ -1,3 +1,4 @@
+import { User } from '@/shared/types'
 import {
   SignInCredentials,
   SignUpCredentials,
@@ -8,6 +9,7 @@ import { create } from 'zustand'
 type Status = 'idle' | 'authorized' | 'unauthorized'
 
 interface AuthState {
+  user: User | null
   status: Status
   signUp: (credentials: SignUpCredentials) => Promise<void>
   signIn: (credentials: SignInCredentials) => Promise<void>
@@ -16,12 +18,13 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
+  user: null,
   status: 'idle',
 
   signUp: async (credentials: SignUpCredentials) => {
     try {
-      await authRepository.signUp(credentials)
-      set({ status: 'authorized' })
+      const user = await authRepository.signUp(credentials)
+      set({ status: 'authorized', user })
     } catch (error) {
       console.log(error)
     }
@@ -29,8 +32,8 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   signIn: async (credentials: SignInCredentials) => {
     try {
-      await authRepository.signIn(credentials)
-      set({ status: 'authorized' })
+      const user = await authRepository.signIn(credentials)
+      set({ status: 'authorized', user })
     } catch (error) {
       console.log(error)
     }
@@ -38,8 +41,8 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   signOut: async () => {
     try {
-      await authRepository.logout()
-      set({ status: 'unauthorized' })
+      await authRepository.signOut()
+      set({ status: 'unauthorized', user: null })
     } catch (error) {
       console.log(error)
     }
@@ -47,10 +50,10 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   me: async () => {
     try {
-      await authRepository.me()
-      set({ status: 'authorized' })
+      const user = await authRepository.me()
+      set({ status: 'authorized', user })
     } catch (error) {
-      set({ status: 'unauthorized' })
+      set({ status: 'unauthorized', user: null })
       console.log(error)
     }
   },
