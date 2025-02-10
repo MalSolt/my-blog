@@ -1,10 +1,5 @@
-import { usePostStore } from '@/stores/post.store'
 import { Editor } from './_components/editor/editor'
-
 export default function Home() {
-  const posts = usePostStore((state) => state.posts)
-  console.log(posts)
-
   return (
     <div className=''>
       <div className='p-4'>
