@@ -1,5 +1,11 @@
+import { auth } from '@/auth'
 import { Editor } from './_components/editor/editor'
-export default function Home() {
+
+export default async function Home() {
+  const session = await auth()
+  console.log('page', session);
+
+
   return (
     <div className=''>
       <div className='p-4'>

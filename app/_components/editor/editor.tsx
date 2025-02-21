@@ -1,17 +1,17 @@
 'use client'
-import { ImagePicker } from '../image-picker/image-picker'
 
-import './editor.css'
-import { useEditor, EditorContent } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import Placeholder from '@tiptap/extension-placeholder'
 import { Button } from '@/app/_components/ui/button'
-import { StyleControllers } from './style-controllers'
+import Placeholder from '@tiptap/extension-placeholder'
+import { EditorContent, useEditor } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
 import { useState } from 'react'
-import { api } from '@/repositories/api'
+import { ImagePicker } from '../image-picker/image-picker'
+import './editor.css'
+import { StyleControllers } from './style-controllers'
 
 export const Editor = () => {
   const [imgUrls, setImgUrls] = useState<string[]>([])
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -31,19 +31,20 @@ export const Editor = () => {
     return null
   }
 
+  // create onDelete function to remove images from imgUrls
   const handleGetImgUrls = (urls: string[]) => {
     setImgUrls((prev) => [...prev, ...urls])
   }
 
   const handleCreatePost = () => {
-    api.post('http://localhost:5000/posts', { content: editor.getJSON(), photo_url: imgUrls[0] })
+    console.log(imgUrls)
   }
 
   return (
     <div className='flex flex-col border-y px-4 py-2.5'>
       <StyleControllers editor={editor} />
-      <EditorContent editor={editor} />
-      <ImagePicker getImgUrls={handleGetImgUrls} />
+      <EditorContent  editor={editor} />
+      <ImagePicker getImgUrls={handleGetImgUrls} maxImages={5} />
       <Button className='ml-auto' onClick={handleCreatePost} disabled={editor.isEmpty}>
         Tweet
       </Button>

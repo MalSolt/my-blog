@@ -1,8 +1,10 @@
 'use client'
 
-import { ChangeEvent, useState } from 'react'
-import { ImagePreview } from './image-preview'
 import axios from 'axios'
+import { ChangeEvent, useRef, useState } from 'react'
+import { Input } from '../ui/input'
+import { ImagePreview } from './image-preview'
+import { toast } from 'react-toastify'
 
 export enum ImageStatus {
   uploading = 'uploading',
@@ -16,20 +18,20 @@ export type ImageUpload = {
   status: ImageStatus
 }
 
-const MAX_IMAGES = 2
-
 type Props = {
   getImgUrls: (urls: string[]) => void
+  maxImages?: number
 }
 
-export const ImagePicker = ({ getImgUrls }: Props) => {
+export const ImagePicker = ({ getImgUrls, maxImages = 5 }: Props) => {
   const [selectedImages, setSelectedImages] = useState<ImageUpload[]>([])
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(event.target.files || [])
-
-    if (selectedImages.length + files.length > MAX_IMAGES) {
-      alert('You can only upload up to 5 images')
+  const handleAdd = (files: File[]) => {
+    if (selectedImages.length + files.length > maxImages) {
+      toast.error('You can only upload up to 5 images', {
+        position: 'bottom-right',
+      })
       return
     }
 
@@ -41,10 +43,16 @@ export const ImagePicker = ({ getImgUrls }: Props) => {
 
     setSelectedImages((prev) => [...prev, ...newImages])
 
-    files.forEach((file) => uploadImage(file))
+    files.forEach((file) => handleUpload(file))
   }
 
-  const uploadImage = async (file: File) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      handleAdd(Array.from(event.target.files))
+    }
+  }
+
+  const handleUpload = async (file: File) => {
     try {
       const formData = new FormData()
       formData.append('image', file)
@@ -53,13 +61,16 @@ export const ImagePicker = ({ getImgUrls }: Props) => {
       const apiUrl = `https://api.imgbb.com/1/upload?key=${apiKey}`
 
       const { data } = await axios.post(apiUrl, formData)
+      const url = data.data.url
 
-      getImgUrls([data.url])
+      getImgUrls([url])
 
       setSelectedImages((prev) =>
-        prev.map((img) =>
-          img.name === file.name ? { ...img, status: ImageStatus.uploaded, url: data.url } : img
-        )
+        prev.map((img) => {
+          console.log(img.name, file.name, data)
+
+          return img.name === file.name ? { ...img, status: ImageStatus.uploaded, url } : img
+        })
       )
     } catch (error) {
       setSelectedImages((prev) =>
@@ -69,38 +80,46 @@ export const ImagePicker = ({ getImgUrls }: Props) => {
     }
   }
 
-  const handleDeleteImage = (name: string) => () => {
+  const handleRemove = (name: string) => {
     setSelectedImages((prev) => prev.filter((img) => img.name !== name))
   }
 
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+  }
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    if (event.dataTransfer.files) {
+      handleAdd(Array.from(event.dataTransfer.files))
+    }
+  }
+
   return (
-    <div>
-      <label htmlFor='image-input' className='px-4 py-2 bg-primary cursor-pointer'></label>
-      <input
-        id='image-input'
-        type='file'
-        multiple
-        accept='image/*'
-        className='hidden'
-        onChange={handleImageChange}
-      />
-      <div className='mt-4'>
-        {selectedImages.length === 1 ? (
-          <ImagePreview
-            deleteImage={handleDeleteImage(selectedImages[0].name)}
-            image={selectedImages[0]}
-          />
-        ) : (
-          <div className='grid grid-cols-2 gap-2'>
-            {selectedImages.map((image) => (
-              <ImagePreview
-                deleteImage={handleDeleteImage(image.name)}
-                image={image}
-                key={image.name}
-              />
-            ))}
-          </div>
-        )}
+    <div className='w-full max-w-2xl mx-auto m-4'>
+      {selectedImages.length > 0 && (
+        <div className='mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4'>
+          {selectedImages.map((image, idx) => (
+            <ImagePreview key={`${image.name}${idx}`} deleteImage={handleRemove} image={image} />
+          ))}
+        </div>
+      )}
+      <div
+        className='mt-4 border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer'
+        onClick={() => fileInputRef.current?.click()}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      >
+        <Input
+          id='pictures'
+          type='file'
+          multiple
+          accept='image/*'
+          className='hidden'
+          onChange={handleChange}
+          ref={fileInputRef}
+        />
+        <p>Click to select or drag and drop images here</p>
       </div>
     </div>
   )

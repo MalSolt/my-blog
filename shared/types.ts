@@ -7,7 +7,7 @@ export type User = {
 export type Post = {
   id: string
   content: string
-  photoUrl: string
+  imageUrls: string
   createdAt: string
   userId: string
 }
